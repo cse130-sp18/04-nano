@@ -167,15 +167,18 @@ exitError (Error msg) = return (VErr msg)
 --------------------------------------------------------------------------------
 eval :: Env -> Expr -> Value
 --------------------------------------------------------------------------------
-eval env (EInt i)   = i
-eval env (EVar v)   = lookup v env
-eval env (EBin b e1 e2) = f (eval env e1) (eval env e2)
+--eval = error "TBD" 
+eval env (EInt i)   = (VInt i)
+eval env (EVar v)   = lookupId v env
+eval env (EBin b e1 e2) = VInt (f (vIntToInt(eval env e1)) (vIntToInt(eval env e2)))
   where
     f = case b of
       Plus  -> (+)
       Minus -> (-)
       Mul   -> (*)
 
+vIntToInt :: Value -> Int
+vIntToInt (VInt x) = x
 --------------------------------------------------------------------------------
 evalOp :: Binop -> Value -> Value -> Value
 --------------------------------------------------------------------------------
